@@ -5,6 +5,7 @@
 #include "WCSocio.h"
 #include "WESocio.h"
 #include <wx/msgdlg.h>
+#include "Utils.h"
 
 
 WSocio::WSocio(wxWindow *parent, Biblioteca *biblioteca)
@@ -31,24 +32,21 @@ void WSocio::RefreshGrid(){
 }
 
 void WSocio::ClickSocioSearch( wxCommandEvent& event )  {
-	int f_actual = m_grid_socios->GetGridCursorRow();
-	if(f_actual == 0) wxMessageBox(c_to_wx("No hay ningun prestamo"));
-	else{
-	if(m_grid_socios->GetSelectedRows().GetCount() == 0)
-		f_actual = -1;
-	int res = m_biblioteca->BuscarDNI(std::stoi(wx_to_std(m_txt_socio_search->GetValue())), f_actual+1);
-	if(res == -1)
-		res = m_biblioteca->BuscarApellidoYNombre(wx_to_std(m_txt_socio_search->GetValue()), f_actual+1);
-	if(res == NO_SE_ENCUENTRA)	
-		res = m_biblioteca->BuscarDNI(std::stoi(wx_to_std(m_txt_socio_search->GetValue())), 0);
-	if(res == -1)
-		res = m_biblioteca->BuscarApellidoYNombre(wx_to_std(m_txt_socio_search->GetValue()), 0);
-	if(res == NO_SE_ENCUENTRA)
-		wxMessageBox("No se encontro");
-	else{
-		m_grid_socios->SetGridCursor(res,0);
-		m_grid_socios->SelectRow(res);
-		}
+	if (m_biblioteca->CantidadSocios() == 0) wxMessageBox(c_to_wx("No hay socias cargados"));
+	std::string buscar = wx_to_std(m_txt_socio_search->GetValue());
+	if(buscar.size() == 0) wxMessageBox(c_to_wx("Debe ingresar un nombre o DNI a buscar"));
+	else{ int res;
+		if (is_number(buscar))	
+			res = m_biblioteca->BuscarDNI(std::stoi(wx_to_std(m_txt_socio_search->GetValue())), 0);
+		else{
+			res = m_biblioteca->BuscarApellidoYNombre(wx_to_std(m_txt_socio_search->GetValue()), 0);
+			if(res == NO_SE_ENCUENTRA)
+				wxMessageBox("No se encontro");
+			else{
+				m_grid_socios->SetGridCursor(res,0);
+				m_grid_socios->SelectRow(res);
+			}
+		}	
 	}
 }
 

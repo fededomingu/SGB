@@ -16,7 +16,7 @@ tab_use_spaces=0
 explorer_path=.
 inspection_improving_template=wxString|>printf "%ls",${EXP}.m_impl._M_data()
 inherits_from=
-current_source=WLibro.cpp
+current_source=WSocio.cpp
 path_char=\
 [source]
 path=Application.cpp
@@ -37,11 +37,11 @@ path=WCLibro.cpp
 cursor=29:5
 [source]
 path=WSocio.cpp
-cursor=10:1
+cursor=38:13
 open=true
 [source]
 path=WLibro.cpp
-cursor=27:28
+cursor=41:8
 open=true
 [source]
 path=WPrincipal.cpp
